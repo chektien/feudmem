@@ -1,3 +1,6 @@
+.undodir/
+session.vim
+
 node_modules/**/*
 .expo/*
 npm-debug.*
