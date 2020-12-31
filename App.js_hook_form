@@ -1,7 +1,13 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { StyleSheet, Text, View, Image, TextInput, Button } from "react-native";
 
 export default function App() {
+  const { post, handleSubmit, watch, errors } = useForm();
+  const onSubmit = (data) => console.log(data);
+
+  console.log(watch("example"));
+
   return (
     <View style={styles.screen}>
       <View>
@@ -14,6 +20,13 @@ export default function App() {
         <Text style={styles.label}>Event</Text>
         <TextInput style={styles.input} defaultValue="Type here" />
       </View>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <input name="what" defaultValue="What is the event?" ref={register} />
+        <input name="when" ref={register({ required: true })} />
+
+        {errors.when && <span> when is required </span>}
+      </form>
     </View>
   );
 }
