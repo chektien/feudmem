@@ -14,9 +14,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "feudmen"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +31,12 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["expo-image-picker", { "photosPermission": "Access photos to attach." }]
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Access photos to attach."
+        }
+      ]
     ]
   }
 }
