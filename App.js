@@ -7,6 +7,7 @@ import {
   Image,
   SafeAreaView,
   TouchableHighlight,
+  TouchableOpacity,
   Button,
   Alert,
 } from "react-native";
@@ -14,11 +15,18 @@ import { StatusBar } from "expo-status-bar";
 import * as ImagePicker from "expo-image-picker";
 import { useDimensions } from "@react-native-community/hooks";
 import React, { useState, useEffect } from "react";
+import { Camera, CameraType } from "expo-camera";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import LoginView from "./views/LoginView";
 //import DatePicker from "react-native-date-picker";
 //import DateTimePicker from "@react-native-community/datetimepicker";
 
-export default function App() {
-  // image
+const Stack = createNativeStackNavigator();
+
+function CreatePost() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [type, setType] = useState(CameraType.back);
   const [image, setImage] = useState(null);
   const [event, onChangeEvent] = useState(null);
   const [datetime, setDatetime] = useState(new Date());
@@ -26,6 +34,20 @@ export default function App() {
 
   // show dimensions
   console.log(useDimensions().screen);
+
+  // boilerplate for getting camera permissions
+  useEffect(() => {
+    (async () => {
+      const { status } = await Camera.requestCameraPermissionsAsync();
+      setHasPermission(status === "granted");
+    })();
+  }, []);
+  if (hasPermission === null) {
+    return <View />;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
 
   const onSubmit = () => {
     Alert.alert("You submitted!");
@@ -72,6 +94,31 @@ export default function App() {
     // SafeAreaView is used to prevent going into the notches of phone screens
     <SafeAreaView style={styles.container}>
       <View style={styles.imageContainer}>
+        <Camera style={styles.camera} type={type}>
+          <TouchableOpacity
+            onPress={() => {
+              setType(
+                type === CameraType.back ? CameraType.front : CameraType.back
+              );
+            }}
+          >
+            <Image
+              source={require("./assets/flip_48px.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              Alert.alert("Clicked Camera!");
+            }}
+          >
+            <Image
+              source={require("./assets/cam_48px.png")}
+              style={styles.icon}
+            />
+          </TouchableOpacity>
+        </Camera>
         <Button
           style={styles.button}
           title="Pick photo again..."
@@ -129,6 +176,20 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={LoginView}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+
 // NOTE that .create will do validation of the object created as a Style type object
 // - if you don't use the validator then any mispelling of the properties will go unnoticed
 //   and compiles fine, resulting in very tough debugging
@@ -183,4 +244,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  camera: {
+    flex: 1,
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "flex-end",
+  },
+  icon: { width: 48, tintColor: "grey" },
 });
