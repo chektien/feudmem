@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import Firebase from "../firebase";
+import { useNavigation } from "@react-navigation/native";
 
 const auth = Firebase.auth();
 
@@ -15,12 +16,34 @@ export default function LoginView() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Home");
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
   const handleSignup = () => {
     auth
       .createUserWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user.email);
+        console.log("Registered user ", user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log("Logged in ", user.email);
       })
       .catch((error) => alert(error.message));
   };
@@ -44,7 +67,7 @@ export default function LoginView() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => {}} style={styles.button}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -60,9 +83,6 @@ export default function LoginView() {
   );
 }
 
-// NOTE that .create will do validation of the object created as a Style type object
-// - if you don't use the validator then any mispelling of the properties will go unnoticed
-//   and compiles fine, resulting in very tough debugging
 const styles = StyleSheet.create({
   container: {
     flex: 1,

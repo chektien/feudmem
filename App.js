@@ -1,180 +1,10 @@
-import {
-  Dimensions,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-  Image,
-  SafeAreaView,
-  TouchableHighlight,
-  TouchableOpacity,
-  Button,
-  Alert,
-} from "react-native";
-import { StatusBar } from "expo-status-bar";
-import * as ImagePicker from "expo-image-picker";
-import { useDimensions } from "@react-native-community/hooks";
-import React, { useState, useEffect } from "react";
-import { Camera, CameraType } from "expo-camera";
+import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginView from "./views/LoginView";
-//import DatePicker from "react-native-date-picker";
-//import DateTimePicker from "@react-native-community/datetimepicker";
+import CreateView from "./views/CreateView";
 
 const Stack = createNativeStackNavigator();
-
-function CreatePost() {
-  const [hasPermission, setHasPermission] = useState(null);
-  const [type, setType] = useState(CameraType.back);
-  const [image, setImage] = useState(null);
-  const [event, onChangeEvent] = useState(null);
-  const [datetime, setDatetime] = useState(new Date());
-  const [location, onChangeLocation] = useState(null);
-
-  // show dimensions
-  console.log(useDimensions().screen);
-
-  // boilerplate for getting camera permissions
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      setHasPermission(status === "granted");
-    })();
-  }, []);
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-
-  const onSubmit = () => {
-    Alert.alert("You submitted!");
-  };
-
-  const getCurrDate = () => {
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    var date = new Date().getDate();
-    var month = monthNames[new Date().getMonth()];
-    var year = new Date().getFullYear();
-    return date + " " + month + " " + year;
-  };
-
-  const pickImage = async () => {
-    console.log("in pickImage");
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-
-    console.log(result);
-
-    if (!result.cancelled) {
-      setImage(result.uri);
-    }
-  };
-
-  return (
-    // SafeAreaView is used to prevent going into the notches of phone screens
-    <SafeAreaView style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Camera style={styles.camera} type={type}>
-          <TouchableOpacity
-            onPress={() => {
-              setType(
-                type === CameraType.back ? CameraType.front : CameraType.back
-              );
-            }}
-          >
-            <Image
-              source={require("./assets/flip_48px.png")}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              Alert.alert("Clicked Camera!");
-            }}
-          >
-            <Image
-              source={require("./assets/cam_48px.png")}
-              style={styles.icon}
-            />
-          </TouchableOpacity>
-        </Camera>
-        <Button
-          style={styles.button}
-          title="Pick photo again..."
-          onPress={() => {
-            pickImage();
-          }}
-        />
-        {image && (
-          // TODO think about how to convert this to a button
-          <Image
-            source={{ uri: image }}
-            style={{
-              width: "70%",
-              height: "70%",
-              borderRadius: 10,
-              borderWidth: 3,
-              borderColor: "grey",
-            }}
-          />
-        )}
-      </View>
-      <View style={styles.inputContainer}>
-        <View style={styles.inputRow}>
-          <Text style={styles.inputTitle}>What?</Text>
-          <TextInput
-            padding={6}
-            style={styles.input}
-            onChangeText={onChangeEvent}
-            value={event}
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Text style={styles.inputTitle}>Where?</Text>
-          <TextInput
-            padding={6}
-            style={styles.input}
-            onChangeText={onChangeLocation}
-            value={location}
-          />
-        </View>
-        <View style={styles.inputRow}>
-          <Text style={styles.inputTitle}>When?</Text>
-          <Text style={styles.inputDate}>{getCurrDate()}</Text>
-        </View>
-      </View>
-      <TouchableHighlight
-        style={styles.submit}
-        activeOpacity={0.7}
-        underlayColor="lightcoral"
-        onPress={onSubmit}
-      >
-        <Text style={{ fontSize: 25 }}>SUBMIT</Text>
-      </TouchableHighlight>
-    </SafeAreaView>
-  );
-}
 
 export default function App() {
   return (
@@ -183,6 +13,11 @@ export default function App() {
         <Stack.Screen
           name="Login"
           component={LoginView}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Home"
+          component={CreateView}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
