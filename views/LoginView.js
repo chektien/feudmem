@@ -6,15 +6,35 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-//import DatePicker from "react-native-date-picker";
-//import DateTimePicker from "@react-native-community/datetimepicker";
+import React, { useState, useEffect } from "react";
+import { auth } from "../firebase";
 
 export default function LoginView() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSignup = () => {
+    auth
+      .createUserWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert(error.message));
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.inputContainer}>
-        <TextInput style={styles.input} placeholder="username" />
         <TextInput
+          value={email}
+          onChangeText={(text) => setEmail(text)}
+          style={styles.input}
+          placeholder="username"
+        />
+        <TextInput
+          value={password}
+          onChangeText={(text) => setPassword(text)}
           style={styles.input}
           placeholder="password"
           secureTextEntry
@@ -26,7 +46,7 @@ export default function LoginView() {
           <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => {}}
+          onPress={handleSignup}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={[styles.buttonText, styles.buttonOutlineText]}>
@@ -67,7 +87,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "white",
-    fontWeight: "500",
+    fontWeight: "600",
     fontSize: 22,
   },
   buttonOutline: {
