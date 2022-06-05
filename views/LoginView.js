@@ -7,7 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { auth } from "../firebase";
+import Firebase from "../firebase";
+
+const auth = Firebase.auth();
 
 export default function LoginView() {
   const [email, setEmail] = useState("");
