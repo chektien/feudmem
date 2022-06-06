@@ -21,3 +21,5 @@ User cloud firestore and not realtime database.
 
 ## Deploying in XCode
 Open the .xcworkspace instead of .xcodeproj for all dependencies to link properly.
+
+need to `brew install ios-deploy`
