@@ -5,20 +5,56 @@ import {
   TextInput,
   SafeAreaView,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import Firebase from "../firebase";
+import { createMem } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
-
-const auth = Firebase.auth();
-const db = Firebase.firestore();
+import { logout } from "../firebase";
 
 export default function MemoryView() {
   const navigation = useNavigation();
+  const [memories, setMemories] = useState([]);
+
+  useEffect(() => {
+    //db.collection("memories")
+    ////.onSnapshot()
+    //.get()
+    //.then((result) => {
+    //result.docs;
+    //})
+    //.then((docs) => {
+    //console.log("received results:", docs);
+    //docs.map((doc) => ({ id: doc.data().id, title: doc.data().title }));
+    //});
+    createMem();
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={[styles.inputTitle]}>Memories</Text>
+      <Text style={[styles.inputTitle]}>Memories...</Text>
+
+      {memories?.map((memory) => (
+        <View style={styles.memoryItem}>
+          <Text>{memory.title}</Text>
+        </View>
+      ))}
+      <Button
+        style={styles.buttonText}
+        onPress={() => {
+          navigation.replace("Home");
+        }}
+        title="Create"
+      />
+      <Button
+        style={styles.buttonText}
+        onPress={() => {
+          logout(() => {
+            navigation.replace("Login");
+          });
+        }}
+        title="Logout"
+      />
     </SafeAreaView>
   );
 }
@@ -30,6 +66,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+  },
+  memoryItem: {
+    textAlign: "left",
+    color: "blue",
   },
   inputContainer: {
     width: "80%",

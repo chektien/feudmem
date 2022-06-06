@@ -16,12 +16,10 @@ import * as ImagePicker from "expo-image-picker";
 import { useDimensions } from "@react-native-community/hooks";
 import React, { useState, useEffect } from "react";
 import { Camera, CameraType } from "expo-camera";
-import Firebase from "../firebase";
+import { logout, getCurrentUser } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 //import DatePicker from "react-native-date-picker";
 //import DateTimePicker from "@react-native-community/datetimepicker";
-
-const auth = Firebase.auth();
 
 export default function CreateView() {
   const [hasPermission, setHasPermission] = useState(null);
@@ -35,15 +33,6 @@ export default function CreateView() {
   console.log(useDimensions().screen);
 
   const navigation = useNavigation();
-
-  const handleLogout = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login");
-      })
-      .catch((error) => alert(error.message));
-  };
 
   // boilerplate for getting camera permissions
   useEffect(() => {
@@ -183,12 +172,19 @@ export default function CreateView() {
         <Text style={{ fontSize: 25 }}>SUBMIT</Text>
       </TouchableHighlight>
 
-      <Button style={styles.button} onPress={handleLogout} title="Logout" />
+      <Button
+        style={styles.button}
+        onPress={() => {
+          logout(() => {
+            navigation.replace("Login");
+          });
+        }}
+        title="Logout"
+      />
       <Text
         style={{ fontWeight: "600", textAlign: "center", color: "dodgerblue" }}
       >
-        {" "}
-        {auth.currentUser?.email}
+        {getCurrentUser?.email}
       </Text>
     </SafeAreaView>
   );

@@ -7,46 +7,28 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import Firebase from "../firebase";
+import { login, register, loginStatus, auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
 
-const auth = Firebase.auth();
+//const auth = Firebase.auth();
 
 export default function LoginView() {
+  const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navigation = useNavigation();
-
+  /**
+   * Jump to home if user is already logged in.
+   */
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = loginStatus((user) => {
       if (user) {
-        navigation.navigate("Home");
+        navigation.navigate("Memory");
       }
     });
 
     return unsubscribe;
   }, []);
-
-  const handleSignup = () => {
-    auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("Registered user ", user.email);
-      })
-      .catch((error) => alert(error.message));
-  };
-
-  const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        console.log("Logged in ", user.email);
-      })
-      .catch((error) => alert(error.message));
-  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,11 +49,18 @@ export default function LoginView() {
       </View>
 
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {
+            login(email, password);
+          }}
+          style={styles.button}
+        >
           <Text style={styles.buttonText}>SUBMIT</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSignup}
+          onPress={() => {
+            register(email, password);
+          }}
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={[styles.buttonText, styles.buttonOutlineText]}>
