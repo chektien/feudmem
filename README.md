@@ -1,10 +1,13 @@
 # Issues
 
-## Firebase
+## Dependencies
+
+### firebase@9.6.11
 Needs to be 9.6.11 as the latest version contains iOS bugs with this idb module.
 Can continue to monitor this issue thread 
+- https://stackoverflow.com/questions/72179070/react-native-bundling-failure-error-message-while-trying-to-resolve-module-i
 
-Use `yarn upgrade firebase@9.6.11` to install the specific version, and change packages.json to point to the specific version (without `^`).
+Use `yarn upgrade firebase@9.6.11` or `npm install firebase@9.6.11 --save` to install the specific version, and change packages.json to point to the specific version (without `^`).
 
 Another thing is that the tutorials online did not add the `compat` folder when importing firebase dependencies.
 
@@ -23,3 +26,10 @@ User cloud firestore and not realtime database.
 Open the .xcworkspace instead of .xcodeproj for all dependencies to link properly.
 
 need to `brew install ios-deploy`
+
+
+## Testing on iOS Simulator
+
+Need to manually open the simulator from Xcode -> Open Developer Tools -> Simulator
+or
+`open -a Simulator.app`

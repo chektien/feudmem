@@ -1,9 +1,6 @@
 // Import the functions you need from the SDKs you need
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app"; // this was the default boilerplate
-//import firebase from "firebase/app";
-//import "firebase/auth";
-//import "firebase/compat/firestore";
 import { collection, doc, addDoc, getFirestore } from "firebase/firestore";
 import {
   getAuth,
@@ -11,7 +8,6 @@ import {
   createUserWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
-  currentUser,
 } from "firebase/auth";
 
 // Your web app's Firebase configuration
@@ -26,10 +22,9 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-
-// default boilerplate code to delete
 const app = initializeApp(firebaseConfig);
 
+// TODO delete when no longer needed
 //let Firebase;
 
 //if (firebase.apps.length === 0) {
