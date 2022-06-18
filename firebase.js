@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app"; // this was the default boilerplate
-import { collection, doc, addDoc, getFirestore } from "firebase/firestore";
+import { collection, addDoc, getFirestore } from "firebase/firestore";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -22,6 +22,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
+// TODO maybe remove app var and just init?
 const app = initializeApp(firebaseConfig);
 
 // TODO delete when no longer needed
@@ -39,7 +40,8 @@ const app = initializeApp(firebaseConfig);
 //const db = Firebase.firestore();
 
 // TODO remove the export when all things can be contained in here
-export const auth = getAuth();
+// NOTE that you can also just export the whole auth and db
+const auth = getAuth();
 const db = getFirestore();
 
 /**
@@ -71,7 +73,7 @@ export const login = (email, password) => {
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredentials) => {
       const user = userCredentials.user;
-      console.log("Logged in ", user.email);
+      console.log("Logged in ", user.email, "with id", user.uid);
     })
     .catch((error) => alert(error.message));
 };

@@ -1,3 +1,9 @@
+/**
+ * The Login Screen.
+ * Any change in the TextInputs will set the email and password states.
+ * Then clicking the buttons will trigger the onPress lambdas that call into
+ * the API from firebase.js
+ */
 import {
   StyleSheet,
   Text,
@@ -7,12 +13,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { login, register, loginStatus, auth } from "../firebase";
 import { useNavigation } from "@react-navigation/native";
-
-//const auth = Firebase.auth();
+import { login, register, loginStatus } from "../firebase"; // our own lib
 
 export default function LoginView() {
+  // init the navigation system that interacts with stack.screens
   const navigation = useNavigation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

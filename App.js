@@ -1,10 +1,10 @@
-import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginView from "./views/LoginView";
 import CreateView from "./views/CreateView";
 import MemoryView from "./views/MemoryView";
 
+// init the stack navigator
 const Stack = createNativeStackNavigator();
 
 export default function App() {
