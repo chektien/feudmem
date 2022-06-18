@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Button,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { createMem } from "../firebase";
@@ -27,6 +28,8 @@ export default function MemoryView() {
     //console.log("received results:", docs);
     //docs.map((doc) => ({ id: doc.data().id, title: doc.data().title }));
     //});
+
+    // TODO remove this debug adding of record in db
     createMem();
   }, []);
 

@@ -13,8 +13,6 @@ Use `yarn upgrade firebase@9.6.11` or `npm install firebase@9.6.11 --save` to in
 A nice firebase expo tutorial is at https://www.youtube.com/watch?v=ql4J6SpLXZA
 - need to change the way you interact with Firebase when using version ^9
 
-This is very poor video but has the right way to import for Firebase ^9
-https://youtu.be/evS7V2M1xq4
 
 Configuration tips:
 - Remember to choose web app.
@@ -35,3 +33,25 @@ need to `brew install ios-deploy`
 Need to manually open the simulator from Xcode -> Open Developer Tools -> Simulator
 or
 `open -a Simulator.app`
+
+
+## References
+
+### Firebase auth with navigation stacks
+https://youtu.be/ql4J6SpLXZA
+
+### Poor video but has the right way to import (compat) for Firebase ^9, and fetch data
+https://youtu.be/evS7V2M1xq4
+
+### Learn React's JSX and component architecture
+https://www.robinwieruch.de/react-function-component/
+
+### Learn React's hooks that exposes React features to functions
+- useState to make functions become pseudo-classes which can maintain state between re-renders
+https://reactjs.org/docs/hooks-state.html
+
+- useEffect() to do stuff right after render
+https://reactjs.org/docs/hooks-effect.html
+
+### Use FlatList for displaying lists
+https://docs.expo.dev/versions/latest/react-native/flatlist/#example

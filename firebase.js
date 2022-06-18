@@ -92,12 +92,25 @@ export const logout = (callback) => {
 
 /**
  * Get login status.
+ * - attach an observer to onAuthStateChanged that will handle login when changed
  */
-export const loginStatus = (callback) => {
-  onAuthStateChanged(auth, callback);
+export const loginStatus = (observer) => {
+  onAuthStateChanged(auth, observer);
 };
 
 /**
  * Get current user.
  */
 export const getCurrentUser = auth.currentUser;
+
+/**
+ * Testing alternative function declaration
+ */
+export function login2(email, password) {
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredentials) => {
+      const user = userCredentials.user;
+      console.log("Logged in alternatively with uid=", user.uid);
+    })
+    .catch((err) => alert("homg ", err.message));
+}

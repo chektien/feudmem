@@ -24,10 +24,17 @@ export default function LoginView() {
 
   /**
    * Jump to home if user is already logged in.
+   * - pass in lambda observer to subscribe to the AuthState, that will navigate
+   *   to home once detect user login
+   * - return unsubscribe (returned from loginStatus) as the cleanup function
+   *   which will unsubscribe the observer from the AuthState broadcaster
+   * - pass in [] for 2nd arg so that the effect is re-ran every time
+   *   if e.g., pass in [user.uid], then the effect will only run when user.uid changes
    */
   useEffect(() => {
     const unsubscribe = loginStatus((user) => {
       if (user) {
+        console.log("Detected user already logged in with id ", user.uid);
         navigation.navigate("Memory");
       }
     });
