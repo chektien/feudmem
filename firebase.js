@@ -23,7 +23,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 // TODO maybe remove app var and just init?
-const app = initializeApp(firebaseConfig);
+const app = initializeapp(firebaseconfig);
 
 // TODO delete when no longer needed
 //let Firebase;
