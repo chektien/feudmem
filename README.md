@@ -1,5 +1,27 @@
 # Feudmem
 
+## Installation
+Use lts version of node for stability
+```
+nvm install --lts
+nvm use --lts
+```
+Make sure npm is latest
+`nvm install-latest-npm`
+
+Install yarn for easier package management
+`brew install yarn`
+
+Then simply `yarn` in the directory to update everything
+
+However, expo-cli seems to need manual updating:
+`yarn add expo-cli`
+(`yarn add` is both installing and updating)
+
+Use `npm doctor` to check everything is correctly linked.
+
+nvm install
+
 ## Dependencies
 
 ### firebase@9.6.11
@@ -12,7 +34,6 @@ Use `yarn upgrade firebase@9.6.11` or `npm install firebase@9.6.11 --save` to in
 
 A nice firebase expo tutorial is at https://www.youtube.com/watch?v=ql4J6SpLXZA
 - need to change the way you interact with Firebase when using version ^9
-
 
 Configuration tips:
 - Remember to choose web app.
