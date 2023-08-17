@@ -1,7 +1,13 @@
 // Import the functions you need from the SDKs you need
 // https://firebase.google.com/docs/web/setup#available-libraries
 import { initializeApp } from "firebase/app"; // this was the default boilerplate
-import { collection, addDoc, getFirestore } from "firebase/firestore";
+import {
+  FieldValue,
+  collection,
+  addDoc,
+  getFirestore,
+  getDocs,
+} from "firebase/firestore";
 import {
   getAuth,
   signInWithEmailAndPassword,
@@ -42,15 +48,26 @@ const app = initializeApp(firebaseConfig);
 // TODO remove the export when all things can be contained in here
 // NOTE that you can also just export the whole auth and db
 const auth = getAuth();
-const db = getFirestore();
+export const db = getFirestore();
+export const memoryRef = collection(db, "memories");
 
 /**
  * Add new memory.
  */
 export const createMem = () => {
   console.log("creating a memory...");
-  const memoryRef = collection(db, "memories");
-  return addDoc(memoryRef, { title: "testing title mme", date: "213" });
+  const timestamp = new Date().getTime();
+  console.log("timestamp is " + timestamp);
+  return addDoc(memoryRef, { title: "testing", date: "213", time: timestamp });
+};
+
+/**
+ * Fetch existing memories.
+ */
+export const fetchAllMem = async () => {
+  console.log("fetching memories...");
+  const querySnapshot = await getDocs(memoryRef);
+  return querySnapshot;
 };
 
 /**

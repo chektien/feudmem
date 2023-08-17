@@ -9,13 +9,46 @@ import {
   FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { createMem } from "../firebase";
+import { createMem, fetchAllMem, memoryRef } from "../firebase";
+import { getDocs } from "firebase/firestore";
 import { useNavigation } from "@react-navigation/native";
 import { logout } from "../firebase";
 
 export default function MemoryView() {
   const navigation = useNavigation();
   const [memories, setMemories] = useState([]);
+
+  //testing
+  const [num, setNum] = useState(0);
+  console.log("num is ", num);
+
+  const updateNum = () => {
+    const newNum = num + 1;
+    console.log("updating num", newNum);
+    setNum(newNum);
+  };
+
+  //fetch the returned snapshot from query to firestore
+  const fetchAllMem = async () => {
+    console.log("fetching memories...");
+    const querySnapshot = await getDocs(memoryRef);
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+    });
+
+    // convert the list of query snapshots into a regular javascript array containing only the title
+    const allMemories = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      title: doc.data().title,
+    }));
+    //const allMemories = querySnapshot.docs.map(doc => doc.data().title)
+
+    // see what is the last item
+    console.log(allMemories[allMemories.length - 1]);
+
+    // store the array as a persistent state variable
+    setMemories(allMemories);
+  };
 
   useEffect(() => {
     //db.collection("memories")
@@ -31,14 +64,22 @@ export default function MemoryView() {
 
     // TODO remove this debug adding of record in db
     createMem();
+
+    // fetch all memories
+    fetchAllMem();
+
+    //querySnapshot.forEach((doc) => {
+    //console.log(doc.id, " => ", doc.data())
+    //})
   }, []);
 
+  // NOTE the key attrib that is needed for each child item created from a jsx array
   return (
     <SafeAreaView style={styles.container}>
       <Text style={[styles.inputTitle]}>Memories...</Text>
 
-      {memories?.map((memory) => (
-        <View style={styles.memoryItem}>
+      {memories.map((memory) => (
+        <View key={memory.id} style={styles.memoryItem}>
           <Text>{memory.title}</Text>
         </View>
       ))}
@@ -58,6 +99,29 @@ export default function MemoryView() {
         }}
         title="Logout"
       />
+      <ActualTestComp num={num} updateNum={updateNum}></ActualTestComp>
+    </SafeAreaView>
+  );
+}
+
+// TESTING
+//function TestComp(props) {
+//return (
+//<ActualTestComp
+//num={props.num}
+//updateNum={props.updateNum}
+//></ActualTestComp>
+//);
+//}
+
+function ActualTestComp(props) {
+  const debugClick = () => {
+    props.updateNum();
+    console.log("inTestComp num is ", props.num);
+  };
+  return (
+    <SafeAreaView>
+      <button onClick={debugClick}> INCREMENT </button>
     </SafeAreaView>
   );
 }
